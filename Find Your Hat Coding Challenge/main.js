@@ -15,8 +15,12 @@ class Field {
       console.log(this.field[i]);
   }
 
-  updateField(x,y){
-    this.field[x][y] = pathCharacter;
+  updateField(direction){
+    if(direction = 'u'){
+      this.field[0][0] = 8  ;
+      console.log('You went upwards!');
+    }
+    
   }
 
   generateField(){}
@@ -37,13 +41,14 @@ function promptUser(){
   let direction = prompt('Enter a direction!');
 
   // Check if user input is out of bounds or against an obstacle.
-  let validDirection = checkBounds(direction);
+  let validDirection = true; //checkBounds(direction);
 
   if (validDirection = true) {
-    updateField()
-    foundCorrectNumber = true;
+    myField.updateField(direction);
+    console.log('\n');
+    myField.printField();
   } else {
-    console.log('Sorry, guess again!');
+    console.log('Sorry, that direction is invalid!');
   }
 }
 
