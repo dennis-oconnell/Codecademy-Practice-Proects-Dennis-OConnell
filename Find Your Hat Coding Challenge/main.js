@@ -15,6 +15,13 @@ class Field {
       console.log(this.field[i]);
   }
 
+  printJoinedField() {
+    const joinedField = this.field.join('');
+    console.log(joinedField);
+    for(let i = 0; i < joinedField.length;i++)
+      console.log(joinedField.charAt(i));
+  }
+
   updateField(direction){
     if(direction = 'u'){
       this.field[0][0] = 8  ;
@@ -26,12 +33,6 @@ class Field {
   generateField(){}
 
 }
-
-const myField = new Field([
-['*', '░', 'O'],
-['░', 'O', '░'],
-['░', '^', '░'],
-]);
 
 function promptUser(){
   
@@ -52,7 +53,14 @@ function promptUser(){
   }
 }
 
-promptUser();
+const myField = new Field([
+  ['*', '░', 'O'],
+  ['░', 'O', '░'],
+  ['░', '^', '░'],
+  ]);
+
+//promptUser();
+myField.printJoinedField();
 
 function playGame(){
 
