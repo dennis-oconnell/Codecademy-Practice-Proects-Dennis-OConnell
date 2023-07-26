@@ -6,6 +6,7 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
+
   constructor(inputArray) {
     this.field = inputArray;
   }
@@ -15,41 +16,64 @@ class Field {
       console.log(this.field[i]);
   }
 
-  printJoinedField() {
-    const joinedField = this.field.join('');
-    console.log(joinedField);
-    for(let i = 0; i < joinedField.length;i++)
-      console.log(joinedField.charAt(i));
-  }
+  //this function updates the users location based on the direction they input
+  updateLocation(direction) {
+    let currentRow = 0;
+    let currentColumn = 0;
+    let currentCharacter = this.field[currentRow][currentColumn];
+    let nextCharacter = this.field[currentRow][currentColumn];
+    let nextRow = 0;
+    let nextColumn = 0;
 
-  updateField(direction){
-    if(direction = 'u'){
-      this.field[0][0] = 8  ;
-      console.log('You went upwards!');
+    //this switch statement updates the users location based on the direction they input
+    switch(direction) {
+      case 'u':
+        nextRow = currentRow - 1;
+        nextColumn = currentColumn;
+        break;
+      case 'd':
+        nextRow = currentRow + 1;
+        nextColumn = currentColumn;
+        break;
+      case 'l':
+        nextRow = currentRow;
+        nextColumn = currentColumn - 1;
+        break;
+      case 'r':
+        nextRow = currentRow;
+        nextColumn = currentColumn + 1;
+        break;
+      default:
+        console.log('Please enter a valid direction');
+        break;
     }
-    
-  }
+    //this if statement checks if the users next location is out of bounds
+    if(nextRow < 0 || nextRow > this.field.length - 1 || nextColumn < 0 || nextColumn > this.field[0].length - 1) {
+      console.log('You went out of bounds! Game Over!');
+      return false;
+    }
+    //this if statement checks if the users next location is a hole
+    else if(this.field[nextRow][nextColumn] == hole) {
+      console.log('You fell in a hole! Game Over!');
+      return false;
+    }
+    //this if statement checks if the users next location is the hat
+    else if(this.field[nextRow][nextColumn] == hat) {
+      console.log('You found your hat! You win!');
+      return false;
+    }
+    //this if statement checks if the users next location is a path character
+    else if(this.field[nextRow][nextColumn] == pathCharacter) {
+      console.log('You already went there! Game Over!');
+      return false;
+    }
 
-  generateField(){}
-
-}
-
-function promptUser(){
-  
-  myField.printField();
-
-  // Get user input
-  let direction = prompt('Enter a direction!');
-
-  // Check if user input is out of bounds or against an obstacle.
-  let validDirection = true; //checkBounds(direction);
-
-  if (validDirection = true) {
-    myField.updateField(direction);
-    console.log('\n');
-    myField.printField();
-  } else {
-    console.log('Sorry, that direction is invalid!');
+    //this if statement checks if the users next location is a field character
+    else if(this.field[nextRow][nextColumn] == fieldCharacter) {
+      this.field[currentRow][currentColumn] = pathCharacter;
+      this.field[nextRow][nextColumn] = pathCharacter;
+      return true;
+    }
   }
 }
 
@@ -59,17 +83,11 @@ const myField = new Field([
   ['░', '^', '░'],
   ]);
 
-//promptUser();
-myField.printJoinedField();
-
-function playGame(){
-
-  console.log('Welcome to the "Find Your Hat" Game!'+ '\n');
-  console.log('Move your character by typing either: "u" for up, "d" for down, "l" for left, or "r" for right' + '\n');
-
-  //When gameState is true, the game is on. When gameState is false, the game is over.
-  let gameState = true; 
-  while(gameState == true){
-    promptUser();
+//this while loop runs until the user finds the hat or falls in a hole
+while(true) {
+  let direction = prompt('Which direction would you like to go? ');
+  if(myField.updateLocation(direction) == false) {
+    break;
   }
+  myField.printField();
 }
