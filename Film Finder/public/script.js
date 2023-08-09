@@ -1,4 +1,6 @@
-const tmdbKey = '';
+const config = require('../config'); // or any other config file
+const tmdbKey = config.apiKey;
+
 const tmdbBaseUrl = '';
 const playBtn = document.getElementById('playBtn');
 
